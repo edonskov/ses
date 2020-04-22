@@ -1,0 +1,68 @@
+buildscript {
+    dependencies {
+        classpath 'com.h2database:h2:1.4.197'
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+    id 'org.flywaydb.flyway' version '6.3.3'
+}
+
+group = 'ru.donskov'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'mysql:mysql-connector-java'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    compile 'org.java-websocket:Java-WebSocket:1.4.1'
+    compile 'org.apache.tomcat.embed:tomcat-embed-jasper:8.0.47'
+    compile 'org.springframework:spring-webmvc'
+    compile('com.auth0:auth0-spring-security-api:1.0.0-rc.3') {
+        exclude module: 'spring-security-config'
+        exclude module: 'spring-security-core'
+        exclude module: 'spring-security-web'
+    }
+    compile('org.springframework.security:spring-security-config')
+    compile('org.springframework.security:spring-security-web')
+    compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+    compileOnly 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+apply plugin: "war"
+war {
+    baseName = 'SpringMVCExample'
+    version = '1.0.0-BUILD-SNAPSHOT'
+}
+
+test {
+    useJUnitPlatform()
+}
